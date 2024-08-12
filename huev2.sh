@@ -8,7 +8,7 @@
 # BEGIN CONSTANTS
 #huebridge='https://10.100.102.138'
 huebridge='https://192.168.0.103'
-api_user_file='hue_api_user.txt'
+api_key_file='hue_api_key.txt'
 
 # END CONSTANTS
 
@@ -53,28 +53,28 @@ function check_lights { src_lightid=1; dst_lightid=1;
 }
 
 
-if ! test -f $api_user_file; then
-	# userfile not found, create API user
-	curl -k -s -X POST -d '{"devicetype":"my_app#plukkie","generateclientkey":true}' $huebridge/api > $api_user_file
+if ! test -f $api_key_file; then
+	# API keyfile not found -> generate API key
+	curl -k -s -X POST -d '{ "devicetype" : "my_app#plukkie", "generateclientkey" : true }' $huebridge/api > $api_key_file
 fi
 
-# Fetch username from file
-if grep -q error "$api_user_file"; then
+# Fetch API key from file
+if grep -q error "$api_key_file"; then
 	# no valid username found
 	echo "There was an error fetching username."
 	echo "This is the message found in the userfile:"
-	cat $api_user_file | jq
+	cat $api_key_file | jq
 	echo "Trying to get username now..."
-	curl -k -s -X POST -d '{"devicetype":"my app#plukkie", "generateclientkey":true}' $huebridge/api > $api_user_file
-	if grep -q error "$api_user_file"; then
+	curl -k -s -X POST -d '{ "devicetype" : "my app#plukkie", "generateclientkey" : true }' $huebridge/api > $api_key_file
+	if grep -q error "$api_key_file"; then
 		echo "Still failed to get username. Exit now."
 		exit 0
 	else
-		user=`cat $api_user_file | jq -r .[].success.username`
+		user=`cat $api_key_file | jq -r .[].success.username`
 	fi
 else
 	# Get APi username
-	user=`cat $api_user_file | jq -r .[].success.username`
+	user=`cat $api_key_file | jq -r .[].success.username`
 fi
 
 #check_lights
