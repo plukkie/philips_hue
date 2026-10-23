@@ -14,6 +14,8 @@ BK_wipper_ID=430777b5-dd47-481c-9f46-139548276b56
 BK_lightstrip_ID=aa371cce-34b0-4a0f-aaf7-2c79fbed6914
 Keuken_wipper_ID=47e42e2f-1f63-46f5-a3b3-890e9c908cb7
 Keuken_Kast_ID=b69b6407-cf7e-4a66-85ad-ddefc298cebd  # Grouped light ID
+TVkast_smartplug=3c4b78a9-6b58-48e3-9117-dc038dfc7b31
+Woonkamer_Raam_Lampen_Wipper=3122fb28-cd42-4c78-9232-9de86abe5e92
 
 BK_All_Bulb_IDs=( "b7d7eb18-4382-4cad-9d1d-b58d49ee70fc" \
                   "0836977d-eb51-44ce-aa99-23139d66920b" \
@@ -157,3 +159,10 @@ src_lightid=$Keuken_wipper_ID
 dst_lightid=$Keuken_Kast_ID
 dst=group
 check_lights
+
+# Check lights of Woonkamer for TV kast
+dst=single
+src_lightid=$Woonkamer_Raam_Lampen_Wipper
+dst_lightid=$TVkast_smartplug
+check_lights
+
